@@ -34,7 +34,12 @@ gomSVD <- function(U, V, d, prune=T, r=10, q=0.4, e=0.2) {
   
   S_hat_X <- spa(X)  # SPA finds the pure subjects from the pruned matrix
   vertices <- X[S_hat_X, ]  # the simplex vertices
-  S_hat <- (1:N)[-indices][S_hat_X]
+  S_hat <- NA
+  if (prune) {
+    S_hat <- (1:N)[-indices][S_hat_X]
+  } else {
+    S_hat <- (1:N)[S_hat_X]
+  }
   
   # estimation for Pi
   P1 <- U %*% solve(vertices)  

@@ -59,6 +59,7 @@ gGoM <- function(R, K, pol=T, dist=NULL, large=T, prune=T, r=10, q=0.4, e=0.2) {
     svd_res <- RSpectra::svds(R, k=K)
   } else {
     svd_res <- svd(R, nu=K, nv=K)
+    svd_res$d <- svd_res$d[1:K]
   }
   
   # parameter estimation
@@ -73,8 +74,8 @@ gGoM <- function(R, K, pol=T, dist=NULL, large=T, prune=T, r=10, q=0.4, e=0.2) {
     # threshold
     res$R_hat[res$R_hat < lower] <- lower
     res$R_hat[res$R_hat > upper] <- upper
-    T_hat[T_hat < lower] <- lower
-    T_hat[T_hat > upper] <- upper
+    res$T_hat[res$T_hat < lower] <- lower
+    res$T_hat[res$T_hat > upper] <- upper
   }
   
   t2 <- Sys.time()
