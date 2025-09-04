@@ -70,12 +70,14 @@ gGoM <- function(R, K, pol=T, dist=NULL, large=T, prune=T, r=10, q=0.4, e=0.2) {
     # re-scale the item parameter matrix estimation
     res$T_hat <- rescale_T(res$T_hat, Cs)
   } else {
-    if (dist == "Bern") res$T_hat <- res$T_hat / 2
+    if (dist == "Binom") res$T_hat <- res$T_hat / 2
     # threshold
-    res$R_hat[res$R_hat < lower] <- lower
-    res$R_hat[res$R_hat > upper] <- upper
-    res$T_hat[res$T_hat < lower] <- lower
-    res$T_hat[res$T_hat > upper] <- upper
+    if (dist != "Norm") {
+      res$R_hat[res$R_hat < lower] <- lower
+      res$R_hat[res$R_hat > upper] <- upper
+      res$T_hat[res$T_hat < lower] <- lower
+      res$T_hat[res$T_hat > upper] <- upper
+    }
   }
   
   t2 <- Sys.time()
