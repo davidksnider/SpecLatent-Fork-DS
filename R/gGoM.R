@@ -32,7 +32,7 @@
 #' @references Chen, Ling, Chengzhu Huang, and Yuqi Gu. "Generalized Grade-of-Membership Estimation for High-dimensional Locally Dependent Data." arXiv preprint arXiv:2412.19796 (2024).
 #' @export
 
-gGoM <- function(R, K, pol=T, dist=NULL, large=T, prune=T, r=10, q=0.4, e=0.2) {
+gGoM <- function(R, K, pol=T, dist=NULL, prune=T, r=10, q=0.4, e=0.2) {
   t1 <- Sys.time()
   
   if (pol) {
@@ -54,13 +54,7 @@ gGoM <- function(R, K, pol=T, dist=NULL, large=T, prune=T, r=10, q=0.4, e=0.2) {
   }
   
   # SVD
-  if (large) {
-    if (K < 3) stop("Error: K should be at least 3 when `large` is TRUE")
-    svd_res <- RSpectra::svds(R, k=K)
-  } else {
-    svd_res <- svd(R, nu=K, nv=K)
-    svd_res$d <- svd_res$d[1:K]
-  }
+  svd_res <- RSpectra::svds(R, k=K)
   
   # parameter estimation
   res <- gomSVD(svd_res$u, svd_res$v, svd_res$d, prune, r, q, e)
